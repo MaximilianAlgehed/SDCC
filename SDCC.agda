@@ -1,4 +1,13 @@
-open import Relation.Nullary
+{- A note on formalisation:
+ - The proof in this file uses Agda as a meta-language for the DC
+ - category. What has not been formalised in this proof is that DC
+ - is a model of SDCC. The proof of this is however trivial on paper
+ - but very annoying to formalise in Agda.
+ - 
+ - The use of function extensionality is simply to get around having
+ - to use a more heavy-handed approach to environments than what can
+ - be found in this file.
+ -}
 open import Agda.Builtin.Equality
 open import Data.List
 
@@ -571,7 +580,6 @@ sem-bind* (PFunction {s = s} p) e e₁ en x x₁ =
                                     (cong (λ ex → ⟦ ex ⟧₀ (extend (extend en s z) _ x₂) x₂ z)
                                           (sym (weaken↓ (λ z₁ → tl (tl z₁)) e₁)))
                          )))
-  -- Need weaken↓ again
   in ext λ x → trans (trans (cong2 (λ f x₂ → f x₂ x)
     (sym (weaken-tl (λ z → tl (tl z)) e₁ en (extend (extend en s x) _ (⟦ weaken (λ {x₂} → tl) e ⟧ (extend en s x))) λ {t} {x₂} → refl))
     (sym (weaken-tl tl e en (extend en s x) (λ {t} {x₂} → refl)))
